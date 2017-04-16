@@ -19,6 +19,7 @@ const (
 	MsgShell
 	MsgGovendorLicense
 	MsgGovendorVersion
+	MsgCreateCpuprofile
 )
 
 func (msg HelpMessage) String() string {
@@ -57,6 +58,8 @@ func (msg HelpMessage) String() string {
 		msgText = msgGovendorLicenses
 	case MsgGovendorVersion:
 		msgText = msgGovendorVersion
+	case MsgCreateCpuprofile:
+		msgText = msgCreateCpuprofile
 	}
 	return msgText
 }

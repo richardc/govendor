@@ -167,3 +167,7 @@ var helpShell = `govendor shell
 
 var msgGovendorVersion = version + `
 `
+
+var msgCreateCpuprofile = `
+Oh dear
+`

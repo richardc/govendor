@@ -9,6 +9,8 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"os"
+	"runtime/pprof"
 
 	"github.com/kardianos/govendor/context"
 	"github.com/kardianos/govendor/help"
@@ -48,6 +50,7 @@ func (r *runner) run(w io.Writer, appArgs []string, ask prompt.Prompt) (help.Hel
 	flags := flag.NewFlagSet("govendor", flag.ContinueOnError)
 	licenses := flags.Bool("govendor-licenses", false, "show govendor's licenses")
 	version := flags.Bool("version", false, "show govendor version")
+	cpuprofile := flags.String("cpuprofile", "", "write cpu profile to a file")
 	flags.SetOutput(nullWriter{})
 	err := flags.Parse(appArgs[1:])
 	if err != nil {
@@ -58,6 +61,14 @@ func (r *runner) run(w io.Writer, appArgs []string, ask prompt.Prompt) (help.Hel
 	}
 	if *version {
 		return help.MsgGovendorVersion, nil
+	}
+	if *cpuprofile != "" {
+		f, err := os.Create(*cpuprofile)
+		if err != nil {
+			return help.MsgCreateCpuprofile, err
+		}
+		pprof.StartCPUProfile(f)
+		defer pprof.StopCPUProfile()
 	}
 
 	args := flags.Args()
